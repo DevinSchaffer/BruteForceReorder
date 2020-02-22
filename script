@@ -9,20 +9,19 @@
 // ==/UserScript==
 
 (function($, wkof) {
-	wkof.include('ItemData, Settings, Menu');
-	wkof.ready('document, ItemData').then(reorderReviews);
+	wkof.include('Apiv2');
+    wkof.ready('Apiv2')
+        .then(getAssignments)
+        .then(updateReviewQueue);
 
-	function reorderReviews() {
+	function getAssignments() {
         let assignment_filters = {immediately_available_for_review: true};
 
-		return Promise.all([wkof.Apiv2.fetch_endpoint('assignments', {filters: assignment_filters})]).then(updateReviewQueue);
-
-        //let p = wkof.Apiv2.fetch_endpoint('assignments', {filters: assignment_filters});
-       // return p.then(updateReviewQueue);
+		return wkof.Apiv2.fetch_endpoint('assignments', {filters: assignment_filters});
 	}
 
 	function updateReviewQueue(assignments) {
-        let assignmentData = assignments[0].data;
+        let assignmentData = assignments.data;
 
         // Sort each section so when combined they can be used to correctly sort the queue.
         let unpassedRadicals = assignmentData.filter((item) => !item.data.passed && item.data.subject_type == 'radical')
