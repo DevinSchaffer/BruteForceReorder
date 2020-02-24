@@ -25,16 +25,16 @@
 
         // Sort each section so when combined they can be used to correctly sort the queue.
         let unpassedRadicals = assignmentData.filter((item) => !item.data.passed && item.data.subject_type == 'radical')
-            .sort((a, b) => (a.data.available_at < b.data.available_at) ? 1 : -1);
+            .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
         let unpassedKanji = assignmentData.filter((item) => !item.data.passed && item.data.subject_type == 'kanji')
-            .sort((a, b) => (a.data.available_at < b.data.available_at) ? 1 : -1);
+            .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
         let unpassedVocabulary = assignmentData.filter((item) => !item.data.passed && item.data.subject_type == 'vocabulary')
-            .sort((a, b) => (a.data.available_at < b.data.available_at) ? 1 : -1);
+            .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
         let remainder = assignmentData.filter((item) => item.data.passed)
-            .sort((a, b) => (a.data.available_at < b.data.available_at) ? 1 : -1);
+            .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
         let orderedAssignments = [...unpassedRadicals || [], ...unpassedKanji || [], ...unpassedVocabulary || [], ...remainder || []];
 
