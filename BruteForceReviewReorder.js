@@ -3,7 +3,7 @@
 // @namespace     https://www.wanikani.com
 // @description   Sort reviews based on whether they have been passed, their type, and when they became available for review.
 // @author        Devin Schaffer
-// @version       1.0.0
+// @version       1.0.1
 // @include       https://www.wanikani.com/review/session
 // @grant         none
 // ==/UserScript==
@@ -24,16 +24,16 @@
         let assignmentData = assignments.data;
 
         // Sort each section so when combined they can be used to correctly sort the queue.
-        let unpassedRadicals = assignmentData.filter((item) => !item.data.passed && item.data.subject_type == 'radical')
+        let unpassedRadicals = assignmentData.filter((item) => typeof(item.data.passed_at) == "undefined" && item.data.subject_type == 'radical')
             .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
-        let unpassedKanji = assignmentData.filter((item) => !item.data.passed && item.data.subject_type == 'kanji')
+        let unpassedKanji = assignmentData.filter((item) => typeof(item.data.passed_at) == "undefined" && item.data.subject_type == 'kanji')
             .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
-        let unpassedVocabulary = assignmentData.filter((item) => !item.data.passed && item.data.subject_type == 'vocabulary')
+        let unpassedVocabulary = assignmentData.filter((item) => typeof(item.data.passed_at) == "undefined" && item.data.subject_type == 'vocabulary')
             .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
-        let remainder = assignmentData.filter((item) => item.data.passed)
+        let remainder = assignmentData.filter((item) => typeof(item.data.passed_at) != "undefined")
             .sort((a, b) => (a.data.available_at < b.data.available_at) ? -1 : 1);
 
         let orderedAssignments = [...unpassedRadicals || [], ...unpassedKanji || [], ...unpassedVocabulary || [], ...remainder || []];
